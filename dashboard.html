@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="dashboard">
+
+    <h2>Welcome <span id="user"></span></h2>
+
+    <div class="balance">
+        💰 Balance: $<span id="balance">100</span>
+    </div>
+
+    <button id="verify">Verify Account</button>
+
+    <h3>💹 Bitcoin Trading Panel</h3>
+    <p>Live Signals: BUY / SELL (Demo)</p>
+
+    <section>
+        <h3>Deposit</h3>
+        <form id="deposit-form">
+            <input type="number" id="deposit" placeholder="Amount">
+            <button>Deposit</button>
+        </form>
+    </section>
+
+    <section>
+        <h3>Withdraw</h3>
+        <form id="withdraw-form">
+            <input type="number" id="withdraw" placeholder="Amount">
+            <button>Withdraw</button>
+        </form>
+    </section>
+
+    <h3>History</h3>
+    <table>
+        <tbody id="history"></tbody>
+    </table>
+
+    <button id="logout">Logout</button>
+
+</div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
