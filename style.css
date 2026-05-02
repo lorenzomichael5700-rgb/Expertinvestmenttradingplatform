@@ -1,141 +1,35 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Arial;
   margin: 0;
-  background: #f4f7fb;
-  color: #333;
-}
-
-/* Header */
-header {
-  background: linear-gradient(90deg, #00264d, #004080);
+  background: #0b0f1a;
   color: white;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-header .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-nav a {
-  color: white;
-  margin-left: 20px;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-nav a:hover {
-  color: gold;
-}
-
-/* Hero */
-.hero {
   text-align: center;
-  padding: 60px 20px;
-  background: linear-gradient(180deg, #004080, #001f33);
-  color: white;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin: 10px 0 20px;
-}
-
-.hero button {
-  background: gold;
-  color: black;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.hero button:hover {
-  background: #ffcc00;
-}
-
-/* Forms */
-.form-section {
-  max-width: 400px;
-  margin: 30px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.center {
+  margin-top: 120px;
 }
 
 button {
-  background: #0073e6;
-  color: white;
+  padding: 10px;
+  margin: 5px;
+  background: gold;
   border: none;
 }
 
-button:hover {
-  background: #005bb5;
-}
-
-/* Dashboard */
-.dashboard {
-  max-width: 900px;
-  margin: 30px auto;
-  text-align: center;
-}
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: white;
+.form-box {
+  width: 300px;
+  margin: 100px auto;
+  background: #1f2937;
   padding: 20px;
-  margin: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  width: 200px;
 }
 
-.balance-card {
-  background: linear-gradient(135deg, #004080, #0073e6);
-  color: white;
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
 }
 
-.actions button {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-}
-
-.topup-btn {
-  background: orange;
-}
-
-.topup-btn:hover {
-  background: darkorange;
-}
-
-.withdraw-btn {
-  background: green;
-}
-
-.withdraw-btn:hover {
-  background: darkgreen;
+.dashboard {
+  margin-top: 80px;
 }
