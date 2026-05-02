@@ -1,26 +1,108 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login / Register</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartInvest - Fintech Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="auth-box">
-    <h2 id="title">Login</h2>
+<!-- HEADER -->
+<header>
+    <div class="logo">$ SmartInvest</div>
+    <nav>
+        <a href="#" onclick="showSection('register')">Register</a>
+        <a href="#" onclick="showSection('login')">Login</a>
+    </nav>
+</header>
 
-    <form id="auth-form">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Continue</button>
+<!-- HERO -->
+<section class="hero">
+    <h1>Smart Investing for a Smarter Future</h1>
+    <p>Secure, fast, and transparent investment solutions.</p>
+    <button onclick="showSection('register')">Get Started</button>
+</section>
+
+<!-- REGISTER -->
+<section id="register" class="hidden form-section fade-in">
+    <h2>Create Your Account</h2>
+    <form id="registerForm">
+        <input type="text" id="regUsername" placeholder="Username" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <button type="submit">Register</button>
     </form>
+</section>
 
-    <p id="toggle-text">
-        Don't have account? <span id="toggle">Register</span>
-    </p>
-</div>
+<!-- LOGIN -->
+<section id="login" class="hidden form-section fade-in">
+    <h2>Login to Your Account</h2>
+    <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+</section>
 
-<script src="auth.js"></script>
+<!-- DASHBOARD -->
+<section id="dashboard" class="hidden dashboard fade-in">
+
+    <h2>Welcome, <span id="userDisplay"></span>!</h2>
+
+    <div class="stats">
+        <div class="card balance-card">
+            <h3>Balance</h3>
+            <p id="balanceDisplay">$100</p>
+        </div>
+
+        <div class="card">
+            <h3>Invested</h3>
+            <p>$0</p>
+        </div>
+
+        <div class="card">
+            <h3>Profit</h3>
+            <p>$0</p>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="topup-btn" onclick="topUp()">Top-Up</button>
+        <button class="withdraw-btn" onclick="withdraw()">Withdraw</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="chart-container">
+        <h3>Investment Growth</h3>
+        <canvas id="growthChart"></canvas>
+    </div>
+
+    <div class="history">
+        <h3>Transaction History</h3>
+
+        <div>
+            <h4>Deposits</h4>
+            <ul id="depositHistory"></ul>
+        </div>
+
+        <div>
+            <h4>Withdrawals</h4>
+            <ul id="withdrawHistory"></ul>
+        </div>
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2026 SmartInvest. All Rights Reserved.</p>
+</footer>
+
+<!-- SCRIPTS (IMPORTANT ORDER FIX) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js" defer></script>
+
 </body>
 </html>
