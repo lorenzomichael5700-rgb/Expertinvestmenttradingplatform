@@ -1,261 +1,174 @@
-let currentUser = null;
-let growthChart = null;
+// ================= REGISTER =================
+document.getElementById("registerForm")?.addEventListener("submit", e => {
+  e.preventDefault();
 
-/* =======================
-   SHOW SECTION
-======================= */
-function showSection(id) {
-    document.querySelectorAll("section").forEach(sec => {
-        sec.classList.add("hidden");
-    });
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
 
-    document.getElementById(id).classList.remove("hidden");
-    window.scrollTo(0, 0);
-}
+  let users = JSON.parse(localStorage.getItem("users")) || [];
 
-/* =======================
-   BALANCE ANIMATION
-======================= */
-function animateBalance(element, start, end) {
-    let duration = 600;
-    let startTime = null;
+  // Prevent duplicate users
+  if (users.find(u => u.username === username)) {
+    alert("User already exists!");
+    return;
+  }
 
-    function step(timestamp) {
-        if (!startTime) startTime = timestamp;
+  const newUser = {
+    username,
+    password,
+    balance: 100,
+    funded: false,
+    history: ["Registered with $100"]
+  };
 
-        let progress = Math.min((timestamp - startTime) / duration, 1);
-        let value = Math.floor(progress * (end - start) + start);
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
 
-        element.textContent = "$ " + value;
-
-        if (progress < 1) {
-            requestAnimationFrame(step);
-        }
-    }
-
-    requestAnimationFrame(step);
-}
-
-/* =======================
-   REGISTER
-======================= */
-document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const username = document.getElementById("regUsername").value.trim();
-    const password = document.getElementById("regPassword").value;
-
-    if (!username || !password) {
-        alert("Please fill all fields");
-        return;
-    }
-
-    if (localStorage.getItem(username)) {
-        alert("Username already exists!");
-        return;
-    }
-
-    localStorage.setItem(username, password);
-    localStorage.setItem(username + "_balance", 100);
-    localStorage.setItem(username + "_deposits", JSON.stringify([]));
-    localStorage.setItem(username + "_withdrawals", JSON.stringify([]));
-    localStorage.setItem(
-        username + "_growth",
-        JSON.stringify([{ date: new Date().toLocaleDateString(), balance: 100 }])
-    );
-
-    alert("Registered successfully! You received $100 bonus.");
-    showSection("login");
+  alert("Registered successfully! You got $100 welcome balance.");
+  window.location.href = "login.html";
 });
 
-/* =======================
-   LOGIN
-======================= */
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
 
-    const username = document.getElementById("loginUsername").value.trim();
-    const password = document.getElementById("loginPassword").value;
+// ================= LOGIN =================
+document.getElementById("loginForm")?.addEventListener("submit", e => {
+  e.preventDefault();
 
-    const storedPassword = localStorage.getItem(username);
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
 
-    if (storedPassword && storedPassword === password) {
-        currentUser = username;
-        updateDashboard();
-        showSection("dashboard");
-    } else {
-        alert("Invalid username or password");
-    }
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const user = users.find(u => u.username === username && u.password === password);
+
+  if (user) {
+    localStorage.setItem("currentUser", username);
+    alert("Login successful!");
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Invalid credentials");
+  }
 });
 
-/* =======================
-   DASHBOARD UPDATE
-======================= */
-function updateDashboard() {
-    let balance = parseFloat(localStorage.getItem(currentUser + "_balance")) || 0;
 
-    document.getElementById("userDisplay").textContent = currentUser;
+// ================= DASHBOARD =================
+if (window.location.pathname.includes("dashboard.html")) {
 
-    let balanceElement = document.getElementById("balanceDisplay");
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let currentUsername = localStorage.getItem("currentUser");
 
-    let currentDisplayed = parseFloat(balanceElement.textContent.replace("$", "")) || 0;
+  let user = users.find(u => u.username === currentUsername);
 
-    animateBalance(balanceElement, currentDisplayed, balance);
+  if (!user) {
+    alert("Please login first");
+    window.location.href = "login.html";
+  }
 
-    // Deposits
-    let deposits = JSON.parse(localStorage.getItem(currentUser + "_deposits")) || [];
-    let depositList = document.getElementById("depositHistory");
-    depositList.innerHTML = "";
+  function saveUser() {
+    localStorage.setItem("users", JSON.stringify(users));
+  }
 
-    deposits.forEach(d => {
-        let li = document.createElement("li");
-        li.textContent = `$${d.amount} - ${d.date}`;
-        depositList.appendChild(li);
+  function updateUI() {
+    document.getElementById("balance").innerText = "Balance: $" + user.balance;
+    updateHistory();
+  }
+
+  function updateHistory() {
+    const historyList = document.getElementById("history");
+    historyList.innerHTML = "";
+
+    user.history.forEach(tx => {
+      const li = document.createElement("li");
+      li.textContent = tx;
+      historyList.appendChild(li);
     });
+  }
 
-    // Withdrawals
-    let withdrawals = JSON.parse(localStorage.getItem(currentUser + "_withdrawals")) || [];
-    let withdrawList = document.getElementById("withdrawHistory");
-    withdrawList.innerHTML = "";
+  updateUI();
 
-    withdrawals.forEach(w => {
-        let li = document.createElement("li");
-        li.textContent = `$${w.amount} - ${w.date}`;
-        withdrawList.appendChild(li);
-    });
 
-    // Chart
-    let growthData = JSON.parse(localStorage.getItem(currentUser + "_growth")) || [];
-    renderChart(growthData);
-}
+  // ================= INVEST =================
+  window.investNow = function () {
+    alert("Investment started! (simulation)");
 
-/* =======================
-   TOP UP
-======================= */
-function topUp() {
-    let input = prompt("Enter deposit amount ($):");
-    if (input === null) return;
+    // Simulate profit
+    let profit = Math.floor(Math.random() * 50) + 10;
+    user.balance += profit;
 
-    let amount = parseFloat(input);
+    user.history.push("Invested and earned $" + profit);
+    saveUser();
+    updateUI();
+  };
+
+
+  // ================= WITHDRAW =================
+  window.withdraw = function () {
+
+    if (!user.funded) {
+      document.getElementById("depositModal").style.display = "block";
+      return;
+    }
+
+    let amount = parseFloat(prompt("Enter withdrawal amount"));
 
     if (isNaN(amount) || amount <= 0) {
-        alert("Invalid amount");
-        return;
+      alert("Invalid amount");
+      return;
     }
 
-    let balance = parseFloat(localStorage.getItem(currentUser + "_balance")) || 0;
-    balance += amount;
-
-    localStorage.setItem(currentUser + "_balance", balance);
-
-    let deposits = JSON.parse(localStorage.getItem(currentUser + "_deposits")) || [];
-    deposits.push({ amount: amount, date: new Date().toLocaleString() });
-
-    localStorage.setItem(currentUser + "_deposits", JSON.stringify(deposits));
-
-    updateGrowth(balance);
-    updateDashboard();
-
-    alert("Deposited $" + amount);
-}
-
-/* =======================
-   WITHDRAW
-======================= */
-function withdraw() {
-    let balance = parseFloat(localStorage.getItem(currentUser + "_balance")) || 0;
-
-    if (balance < 150) {
-        alert("Withdrawal locked. Fund account first (min $150 balance).");
-        return;
+    if (amount > user.balance) {
+      alert("Insufficient balance");
+      return;
     }
 
-    let input = prompt("Enter withdrawal amount ($):");
-    if (input === null) return;
+    user.balance -= amount;
+    user.history.push("Withdrew $" + amount);
 
-    let amount = parseFloat(input);
+    saveUser();
+    updateUI();
 
-    if (isNaN(amount) || amount <= 0) {
-        alert("Invalid amount");
-        return;
+    alert("Withdrawal successful!");
+  };
+
+
+  // ================= FUND ACCOUNT =================
+  window.fundAccount = function () {
+    document.getElementById("depositModal").style.display = "block";
+  };
+
+
+  // ================= DEPOSIT =================
+  window.showCryptoPrompt = function () {
+    alert("Deposit successful (simulation)");
+
+    user.balance += 50;
+    user.funded = true;
+
+    user.history.push("Deposited $50");
+    saveUser();
+
+    document.getElementById("depositModal").style.display = "none";
+    updateUI();
+  };
+
+
+  window.closeModal = function () {
+    document.getElementById("depositModal").style.display = "none";
+  };
+
+
+  // ================= CHART =================
+  const ctx = document.getElementById("chart").getContext("2d");
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["Start", "Now"],
+      datasets: [{
+        label: "Balance Trend",
+        data: [100, user.balance],
+        borderColor: "blue",
+        fill: false
+      }]
     }
-
-    if (amount > balance) {
-        alert("Insufficient balance");
-        return;
-    }
-
-    balance -= amount;
-    localStorage.setItem(currentUser + "_balance", balance);
-
-    let withdrawals = JSON.parse(localStorage.getItem(currentUser + "_withdrawals")) || [];
-    withdrawals.push({ amount: amount, date: new Date().toLocaleString() });
-
-    localStorage.setItem(currentUser + "_withdrawals", JSON.stringify(withdrawals));
-
-    updateGrowth(balance);
-    updateDashboard();
-
-    alert("Withdrawal successful: $" + amount);
-}
-
-/* =======================
-   UPDATE GROWTH
-======================= */
-function updateGrowth(balance) {
-    let data = JSON.parse(localStorage.getItem(currentUser + "_growth")) || [];
-
-    data.push({
-        date: new Date().toLocaleDateString(),
-        balance: balance
-    });
-
-    localStorage.setItem(currentUser + "_growth", JSON.stringify(data));
-
-    renderChart(data);
-}
-
-/* =======================
-   CHART
-======================= */
-function renderChart(data) {
-    let ctx = document.getElementById("growthChart").getContext("2d");
-
-    let labels = data.map(d => d.date);
-    let values = data.map(d => d.balance);
-
-    if (growthChart) {
-        growthChart.destroy();
-    }
-
-    growthChart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Balance Growth",
-                data: values,
-                borderColor: "#0073e6",
-                backgroundColor: "rgba(0,115,230,0.1)",
-                fill: true,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-}
-
-/* =======================
-   LOGOUT
-======================= */
-function logout() {
-    currentUser = null;
-    showSection("login");
+  });
 }

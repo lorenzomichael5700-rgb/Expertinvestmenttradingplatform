@@ -1,22 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Dashboard</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <h1>Your Dashboard</h1>
+  </header>
 
-<div class="dashboard">
+  <div class="container">
+    <h2 id="balance"></h2>
+    <button onclick="investNow()">Invest Now</button>
+    <button onclick="withdraw()">Withdraw</button>
+    <button onclick="fundAccount()">Fund Your Account</button>
 
-  <h2>Welcome</h2>
-  <h3>Balance: $<span id="balance">100</span></h3>
+    <h3>Transaction History</h3>
+    <ul id="history"></ul>
 
-  <button onclick="deposit()">Deposit</button>
-  <button onclick="withdraw()">Withdraw</button>
-  <button onclick="logout()">Logout</button>
+    <h3>Balance Chart</h3>
+    <canvas id="chart"></canvas>
+  </div>
 
-</div>
+  <!-- Deposit Modal -->
+  <div id="depositModal" class="modal">
+    <div class="modal-content">
+      <h2>Fund Your Account</h2>
+      <p>You must deposit $50 before withdrawing your $100.</p>
+      <img src="qr.png" alt="Bitcoin Wallet QR" style="width:200px; margin:10px auto;">
+      <button onclick="showCryptoPrompt()">Fund Using Bitcoin Wallet</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
 
-<script type="module" src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,35 +1,72 @@
 body {
-  font-family: Arial;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
-  background: #0b0f1a;
+  background: #f4f6f9;
+  color: #333;
+}
+
+header {
+  background: linear-gradient(120deg, #1e3c72, #2a5298);
   color: white;
+  padding: 30px;
   text-align: center;
 }
 
-.center {
-  margin-top: 120px;
-}
-
-button {
-  padding: 10px;
-  margin: 5px;
-  background: gold;
-  border: none;
-}
-
-.form-box {
-  width: 300px;
-  margin: 100px auto;
-  background: #1f2937;
-  padding: 20px;
-}
-
-input {
-  width: 90%;
-  padding: 10px;
+h1, h2 {
   margin: 10px 0;
 }
 
-.dashboard {
-  margin-top: 80px;
+.btn {
+  background: #ff9800;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn:hover {
+  background: #e68900;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+input, button {
+  margin: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  background: #2a5298;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background: #1e3c72;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+.modal-content {
+  background: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 350px;
+  border-radius: 10px;
+  text-align: center;
 }
